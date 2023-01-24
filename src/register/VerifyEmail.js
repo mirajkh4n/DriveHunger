@@ -11,7 +11,7 @@ import {
 } from 'react-native-confirmation-code-field';
 
 const CELL_COUNT = 4;
-const VerifyEmail = () => {
+const VerifyEmail = ({navigation}) => {
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -60,10 +60,12 @@ const VerifyEmail = () => {
         textContentType="oneTimeCode"
         renderCell={renderCell}
       />
-      <TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate('LogIn')}>
         <Text style={styles.signInBtn}>Continue</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity activeOpacity={0.8}>
         <Text style={styles.resend}>resend code</Text>
       </TouchableOpacity>
     </SafeAreaView>

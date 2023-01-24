@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, {useContext, useEffect} from 'react';
+import {View, ActivityIndicator} from 'react-native';
 import Navigation from './src/navigation/Navigation';
 import SplashScreen from 'react-native-splash-screen';
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import 'react-native-gesture-handler';
+import {AuthContext, AuthProvider} from './src/context/AuthContext';
 
 const App = () => {
   useEffect(() => {
@@ -11,11 +13,9 @@ const App = () => {
 
   return (
     <NavigationContainer>
-
       <Navigation />
     </NavigationContainer>
-  )
-
+  );
 };
 
 export default App;

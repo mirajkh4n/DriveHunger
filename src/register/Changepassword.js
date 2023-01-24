@@ -34,7 +34,9 @@ const ForgotPassword = ({navigation}) => {
           secureTextEntry={true}
         />
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('VerifyEmail')}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate('VerifyEmail')}>
         <Text style={styles.signInBtn}>Change Password</Text>
       </TouchableOpacity>
     </View>

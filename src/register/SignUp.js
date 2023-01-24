@@ -6,10 +6,91 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Alert,
+  ToastAndroid,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {color} from 'react-native-reanimated';
 
 const Signup = ({navigation}) => {
+  const [firstName, setFirstName] = useState('');
+  const [firstNameError, setFirstNameError] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  useEffect(() => {}, []);
+
+  const ShowToast = () => {
+    ToastAndroid.show(
+      'Fill all filed correctly',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+  };
+
+  const handleFirstNameChange = text => {
+    setFirstName(text);
+    if (text.length < 4) {
+      setFirstNameError('First name must be at least 8 characters long.');
+    } else {
+      setFirstNameError('');
+    }
+    console.log('first name', setFirstName);
+  };
+  const handleEmailChange = text => {
+    setEmail(text);
+    const emailRegex =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!emailRegex.test(text)) {
+      setEmailError('Invalid email address.');
+    } else {
+      setEmailError('');
+    }
+  };
+  const handlePasswordChange = text => {
+    setPassword(text);
+    if (text.length < 8) {
+      setPasswordError('Password must be at least 8 characters long.');
+    } else {
+      setPasswordError('');
+    }
+  };
+
+  // PostApiRequest
+
+  const myFetchSignUpRequest = async () => {
+    if (firstName === '' || email === '' || password === '') {
+      ShowToast();
+    } else {
+      var myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+
+      var data = JSON.stringify({
+        name: firstName,
+        email: email,
+        password: password,
+        role: 'volunteer',
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: data,
+        redirect: 'follow',
+      };
+
+      fetch('http://51.83.237.63:4009/api/user', requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+
+      navigation.navigate('LogIn');
+    }
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -20,17 +101,45 @@ const Signup = ({navigation}) => {
             alignItems: 'center',
           }}>
           <Text style={styles.headerText}>Sign Up</Text>
-          <TextInput style={styles.input} placeholder="Full name" />
-          <TextInput style={styles.input} placeholder="Email address" />
+          <TextInput
+            style={styles.input}
+            placeholder="Full name"
+            onChangeText={text => handleFirstNameChange(text)}
+            value={firstName}
+          />
+
+          <Text style={{color: 'red', paddingRight: 60}}>{firstNameError}</Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Email address"
+            onChangeText={text => handleEmailChange(text)}
+            value={email}
+          />
+          {emailError ? (
+            <Text
+              style={{color: 'red', alignSelf: 'flex-start', paddingLeft: 28}}>
+              {emailError}
+            </Text>
+          ) : null}
           <TextInput
             style={styles.input}
             placeholder="Password"
+            onChangeText={text => handlePasswordChange(text)}
             secureTextEntry={true}
+            value={password}
           />
+          {passwordError && (
+            <Text style={{color: 'red', paddingRight: 70}}>
+              {passwordError}
+            </Text>
+          )}
 
           <View style={styles.createAccount}>
             <Text style={{fontSize: 16}}>Already have an account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate('LogIn')}>
               <Text
                 style={{
                   marginLeft: 10,
@@ -43,7 +152,10 @@ const Signup = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity
+          // onPress={() => navigation.navigate('LogIn')}
+          onPress={() => myFetchSignUpRequest()}
+          activeOpacity={0.8}>
           <Text style={styles.signInBtn}>Sign Up</Text>
         </TouchableOpacity>
         <Text
@@ -55,14 +167,14 @@ const Signup = ({navigation}) => {
           }}>
           Or
         </Text>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity activeOpacity={0.8} style={styles.button}>
           <Image
             source={require('../assests/logo_google.png')}
             style={styles.tinyLogo}
           />
           <Text>Sign in with Google</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity activeOpacity={0.8} style={styles.button}>
           <Image
             source={require('../assests/f_logo.png')}
             style={styles.tinyLogo}

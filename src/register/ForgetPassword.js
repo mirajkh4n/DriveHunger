@@ -25,7 +25,9 @@ const ForgotPassword = ({navigation}) => {
         </View>
         <TextInput style={styles.input} placeholder="Email address" />
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('ChangePassword')}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate('ChangePassword')}>
         <Text style={styles.signInBtn}>Reset Password</Text>
       </TouchableOpacity>
     </View>

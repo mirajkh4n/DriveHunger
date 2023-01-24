@@ -1,28 +1,29 @@
-import { StyleSheet } from 'react-native';
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import {StyleSheet} from 'react-native';
+import React, {useContext} from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
 import Auth from './Auth';
-import { NavigationContainer } from '@react-navigation/native';
+import Main from './Main';
+import {AuthProvider} from '../context/AuthContext';
 
 const Stack = createStackNavigator();
 
 const Navigation = () => (
-
-
-  <Stack.Navigator initialRouteName='AuthStack' >
-    <Stack.Screen
-      name="AuthStack"
-      component={Auth}
-      options={{ headerShown: false }}
-    />
-
-  </Stack.Navigator>
-
-
-
-
+  <AuthProvider>
+    <Stack.Navigator initialRouteName="AuthStack">
+      <Stack.Screen
+        name="AuthStack"
+        component={Auth}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MainStack"
+        component={Main}
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  </AuthProvider>
 );
 
 export default Navigation;
 
-const styles = StyleSheet.create({});
+// const styles = StyleSheet.create({});

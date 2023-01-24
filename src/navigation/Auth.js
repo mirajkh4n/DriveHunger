@@ -1,86 +1,30 @@
 import * as React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {Text, TouchableOpacity} from 'react-native';
+import {createStackNavigator} from '@react-navigation/stack';
 import LogIn from '../register/Login';
 import Signup from '../register/SignUp';
 import ForgotPassword from '../register/ForgetPassword';
 import ChangePassword from '../register/Changepassword';
 import VerifyEmail from '../register/VerifyEmail';
-import Donations from '../screens/Donations';
-import Profile from '../screens/Profile';
+import Walk_Through from '../register/walk_Through';
+import Get_Start from '../register/Get_Start';
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 const Auth = () => {
   return (
-    <Stack.Navigator initialRouteName="LogIn">
-      <Stack.Screen
-        name="LogIn"
-        component={LogIn}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Signup"
-        component={Signup}
-        options={{
-          headerShown: true,
-          title: null,
-          headerShadowVisible: false, // applied here
-        }}
-      />
-      <Stack.Screen
-        name="ForgotPassword"
-        component={ForgotPassword}
-        options={{
-          headerShown: true,
-          title: null,
-          headerShadowVisible: false, // applied here
-        }}
-      />
-      <Stack.Screen
-        name="ChangePassword"
-        component={ChangePassword}
-        options={{
-          headerShown: true,
-          title: null,
-          headerShadowVisible: false, // applied here
-        }}
-      />
-      <Stack.Screen
-        name="VerifyEmail"
-        component={VerifyEmail}
-        options={{
-          headerShown: true,
-          title: null,
-          headerShadowVisible: false, // applied here
-        }}
-      />
-      <Stack.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          title: 'Profile',
-          headerTitleAlign: 'center',
-          headerTintColor: '#4E4B66',
-          headerShadowVisible: false, // applied here
-          headerRight: () => {
-            return (
-              <TouchableOpacity>
-                <Text>Click Me</Text>
-              </TouchableOpacity>
-            );
-          },
-        }}
-      />
-      <Stack.Screen
-        name="Donations"
-        component={Donations}
-        options={{
-          headerShown: false,
-          title: null,
-          headerShadowVisible: false, // applied here
-        }}
-      />
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="Walk_Through">
+      <Stack.Screen name="Walk_Through" component={Walk_Through} />
+      <Stack.Screen name="Get_Start" component={Get_Start} />
+      <Stack.Screen name="LogIn" component={LogIn} />
+      <Stack.Screen name="Signup" component={Signup} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
+      <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
     </Stack.Navigator>
   );
 };
