@@ -15,10 +15,12 @@ import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import {myFetchGetRequest} from '../MyFetchApi';
 import {AuthContext} from '../context/AuthContext';
+import axios from 'axios';
 
 const Profile = ({navigation}) => {
+  // CONTEXT
   const {state, dispatch} = useContext(AuthContext);
-
+  // USESTATE
   const [businessName, setBusinessName] = useState();
   const [name, setUserName] = useState();
   const [email, setEmail] = useState();
@@ -34,19 +36,21 @@ const Profile = ({navigation}) => {
   const [openEnd, setOpenEnd] = useState(false);
 
   const resetState = () => {
-    setEmail('');
-    setUserName('');
-    setBusinessName('');
-    setAddess('');
-    setContact('');
-    setChangePassword('');
+    // setEmail('');
+    // setUserName('');
+    // setBusinessName('');
+    // setAddess('');
+    // setContact('');
+    // setChangePassword('');
   };
 
   useEffect(() => {
-    getData();
+    getUserInfo();
+    updateUser();
   }, []);
+  console.log('contact', contact);
   // Get Api
-  const getData = async () => {
+  const getUserInfo = async () => {
     const response = await fetch('http://51.83.237.63:4009/api/user', {
       method: 'GET',
       headers: {
@@ -58,26 +62,40 @@ const Profile = ({navigation}) => {
     setProfileData(resJson.data.profile);
     setEmail(resJson.data.profile.email);
     setUserName(resJson.data.profile.name);
+    setBusinessName(resJson.data.profile.businessName);
+    setContact(resJson.data.profile.contactNumber);
+    setAddess(resJson.data.profile.address);
     console.log('resjson Profile', resJson.data.profile);
   };
 
-  const onSavePress = () => {
-    //   let data = {
-    //     businessName: businessName,
-    //     userName: userName,
-    //     email: email,
-    //     address: address,
-    //     contact: contact,
-    //     changePassword: changePassword,
-    //   };
-    //   dispatch({type: 'PROFILE_DATA', payload: data});
-    //   console.log('=> Profile data', state?.userAuthentication);
-    // };
-    // const getData = async () => {
-    //   const res = myFetchGetRequest();
-    //   console.log('pro', data);
-    //   console.log('Profile data 2', res);
-    // };
+  // PUT API
+  const updateUser = async () => {
+    var myHeaders = new Headers();
+    myHeaders.append('token', state.userAuthentication.token);
+
+    var formdata = new FormData();
+    formdata.append(
+      'data',
+      JSON.stringify({
+        name: name,
+        businessName: businessName,
+        contactNumber: contact,
+        address: address,
+      }),
+    );
+    // formdata.append('file', fileInput.files[0], '/path/to/file');
+
+    var requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: formdata,
+      // redirect: 'follow',
+    };
+
+    fetch('http://51.83.237.63:4009/api/user', requestOptions)
+      .then(response => response.json())
+      .then(result => console.log('result', result))
+      .catch(error => console.log('error', error));
   };
 
   return (
@@ -218,7 +236,7 @@ const Profile = ({navigation}) => {
             style={styles.input}
             placeholder="Contact Number"
             onChangeText={text => setContact(text)}
-            defaultValue={setContact}
+            value={contact}
           />
           <Text style={styles.textTitle}>Change Password</Text>
           <View style={styles.passwordContainer}>
@@ -244,7 +262,7 @@ const Profile = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => {
-              onSavePress();
+              updateUser();
               navigation.navigate('Donations');
               resetState();
             }}>

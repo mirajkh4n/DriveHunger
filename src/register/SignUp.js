@@ -34,7 +34,7 @@ const Signup = ({navigation}) => {
   const handleFirstNameChange = text => {
     setFirstName(text);
     if (text.length < 4) {
-      setFirstNameError('First name must be at least 8 characters long.');
+      setFirstNameError('Minimun 8 characters');
     } else {
       setFirstNameError('');
     }

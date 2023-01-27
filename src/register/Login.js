@@ -34,7 +34,7 @@ const LogIn = ({navigation}) => {
   };
   const ShowToastForInvaildmail = () => {
     ToastAndroid.show(
-      'Invailed email',
+      'Invailed email or Password',
       ToastAndroid.SHORT,
       ToastAndroid.CENTER,
     );

@@ -5,6 +5,7 @@ import Images from '../assests/Images';
 import Modal from 'react-native-modal';
 import {Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import Lottie from 'lottie-react-native';
 
 const TrackingVolunteer = ({navigation}) => {
   const [position, setPosition] = useState({
@@ -130,7 +131,7 @@ const TrackingVolunteer = ({navigation}) => {
             <Modal isVisible={isModalVisible}>
               <View
                 style={{
-                  flex: 0.7,
+                  flex: 0.6,
                   backgroundColor: '#fff',
                   borderRadius: 12,
                 }}>
@@ -162,16 +163,26 @@ const TrackingVolunteer = ({navigation}) => {
                     <View
                       style={{
                         paddingTop: 30,
-                        height: 220,
+                        // height: 220,
+                        // backgroundColor: 'blue',
                       }}>
-                      <Image
+                      {/* <Image
                         source={Images.Tick_Vector}
                         style={{height: 100, width: 100}}
+                      /> */}
+                      <Lottie
+                        source={Images.acceptLottie}
+                        autoPlay
+                        style={{
+                          height: 120,
+                          width: 120,
+                        }}
+                        loop
                       />
                     </View>
                     <TouchableOpacity
                       activeOpacity={0.8}
-                      style={{width: '100%'}}>
+                      style={{width: '100%', paddingTop: 10}}>
                       <Text style={styles.TrackYourOrderTxt}>
                         Track your order
                       </Text>

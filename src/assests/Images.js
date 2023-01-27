@@ -30,5 +30,8 @@ export default {
   onboarding3: require('../assests/onboarding3.png'),
   Filter: require('../assests/Filter.png'),
   bgModalImage: require('../assests/bgModalImage.png'),
+  acceptedLottie: require('../assests/acceptedLottie.json'),
+  acceptLottie: require('../assests/accept_Lottie.json'),
+
   // addMore: require("../assests/addmore"),
 };
