@@ -10,14 +10,13 @@ import {
   Alert,
 } from 'react-native';
 import React, {useState, useContext, useEffect} from 'react';
-import Entypo from 'react-native-vector-icons/Entypo';
 import {AuthContext} from '../context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Signup from './SignUp';
 
 const LogIn = ({navigation}) => {
   // Context
-  const {state, dispatch} = useContext(AuthContext);
+  const {state, dispatch, updateUser} = useContext(AuthContext);
+
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
@@ -25,20 +24,7 @@ const LogIn = ({navigation}) => {
 
   useEffect(() => {}, []);
 
-  const ShowToast = () => {
-    ToastAndroid.show(
-      'Fill all filed correctly',
-      ToastAndroid.SHORT,
-      ToastAndroid.CENTER,
-    );
-  };
-  const ShowToastForInvaildmail = () => {
-    ToastAndroid.show(
-      'Invailed email or Password',
-      ToastAndroid.SHORT,
-      ToastAndroid.CENTER,
-    );
-  };
+  const ShowToast = () => {};
 
   const handleEmailChange = text => {
     setEmail(text);
@@ -66,9 +52,13 @@ const LogIn = ({navigation}) => {
 
   // PutApiRequest
 
-  const myFetchSignUpRequest = async () => {
+  const myFetchSignInRequest = async () => {
     if (!email || !password) {
-      ShowToast();
+      ToastAndroid.show(
+        result.message,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
     } else {
       var myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
@@ -82,7 +72,6 @@ const LogIn = ({navigation}) => {
         method: 'PUT',
         headers: myHeaders,
         body: data,
-        redirect: 'follow',
       };
 
       fetch('http://51.83.237.63:4009/api/auth/user', requestOptions)
@@ -90,11 +79,17 @@ const LogIn = ({navigation}) => {
         .then(result => {
           if (result.success) {
             console.log('Login', result);
+            AsyncStorage.setItem('user', JSON.stringify(result.data));
             dispatch({type: 'LOGIN_USER', payload: result.data});
-            navigation.navigate('MainStack');
+            updateUser();
             resetState();
           } else if (!result.success) {
-            ShowToastForInvaildmail();
+            ToastAndroid.show(
+              result.message,
+              ToastAndroid.SHORT,
+              ToastAndroid.CENTER,
+            );
+            // ShowToastForInvaildmail();
           }
         })
         .catch(error => console.log('error', error));
@@ -184,7 +179,7 @@ const LogIn = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => {
-              myFetchSignUpRequest();
+              myFetchSignInRequest();
             }}
             // onPress={() => {
             //   onLoginPress();

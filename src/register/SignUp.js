@@ -6,12 +6,9 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Alert,
   ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {color} from 'react-native-reanimated';
 
 const Signup = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
@@ -23,13 +20,7 @@ const Signup = ({navigation}) => {
 
   useEffect(() => {}, []);
 
-  const ShowToast = () => {
-    ToastAndroid.show(
-      'Fill all filed correctly',
-      ToastAndroid.SHORT,
-      ToastAndroid.CENTER,
-    );
-  };
+  const ShowToast = () => {};
 
   const handleFirstNameChange = text => {
     setFirstName(text);
@@ -63,7 +54,11 @@ const Signup = ({navigation}) => {
 
   const myFetchSignUpRequest = async () => {
     if (firstName === '' || email === '' || password === '') {
-      ShowToast();
+      ToastAndroid.show(
+        result.message,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
     } else {
       var myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
@@ -83,11 +78,20 @@ const Signup = ({navigation}) => {
       };
 
       fetch('http://51.83.237.63:4009/api/user', requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
+        .then(response => response.json())
+        .then(result => {
+          console.log(result);
+          if (result.success) {
+            navigation.navigate('LogIn');
+          } else {
+            ToastAndroid.show(
+              result.message,
+              ToastAndroid.SHORT,
+              ToastAndroid.CENTER,
+            );
+          }
+        })
         .catch(error => console.log('error', error));
-
-      navigation.navigate('LogIn');
     }
   };
 

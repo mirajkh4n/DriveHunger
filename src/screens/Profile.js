@@ -16,7 +16,8 @@ import moment from 'moment';
 import {myFetchGetRequest} from '../MyFetchApi';
 import {AuthContext} from '../context/AuthContext';
 import axios from 'axios';
-
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-picker';
 const Profile = ({navigation}) => {
   // CONTEXT
   const {state, dispatch} = useContext(AuthContext);
@@ -35,6 +36,8 @@ const Profile = ({navigation}) => {
   const [endTime, setEndTime] = useState(new Date());
   const [openEnd, setOpenEnd] = useState(false);
 
+  // PROFILE IMAGE State
+  const [imageUri, setImageUri] = useState('');
   const resetState = () => {
     // setEmail('');
     // setUserName('');
@@ -48,7 +51,6 @@ const Profile = ({navigation}) => {
     getUserInfo();
     updateUser();
   }, []);
-  console.log('contact', contact);
   // Get Api
   const getUserInfo = async () => {
     const response = await fetch('http://51.83.237.63:4009/api/user', {
@@ -98,6 +100,29 @@ const Profile = ({navigation}) => {
       .catch(error => console.log('error', error));
   };
 
+  const openCamera = () => {
+    const options = {
+      storageOptions: {
+        path: 'images',
+        mediaType: 'photo',
+      },
+      // includeBase64: true,
+    };
+
+    launchCamera(options, response => {
+      console.log('response =', response);
+      if (response.didCancel) {
+        console.log('User Cancelled Image Picker');
+      } else if (response.error) {
+        console.log('Image picker error', response.error);
+      } else {
+        console.log(response.assets[0].uri);
+        setImageUri(response.assets[0].uri);
+        // const source = {uri: 'data/image/jpeg;base64,' + response.base64};
+        // setImageUri(source);
+      }
+    });
+  };
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
       <View>
@@ -112,7 +137,28 @@ const Profile = ({navigation}) => {
             <Text style={styles.profileText}>Profile</Text>
           </View>
         </View>
-        <Image source={Images.profileimage} style={styles.profile} />
+        <View style={{justifyContent: 'center'}}>
+          <Image source={`https://${imageUri.uri}`} style={styles.profile} />
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => openCamera()}
+            style={{
+              position: 'absolute',
+              alignSelf: 'center',
+              paddingTop: 20,
+            }}>
+            <Image
+              source={Images.Camera}
+              style={{
+                height: 28,
+                width: 28,
+                resizeMode: 'contain',
+                tintColor: 'black',
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+
         <View>
           <Text style={styles.businessText}>Business Name</Text>
           <TextInput
@@ -337,6 +383,11 @@ const styles = StyleSheet.create({
     width: 100,
     marginTop: 20,
     alignSelf: 'center',
+    borderRadius: 50,
+    borderColor: 'red',
+    borderWidth: 1,
+    resizeMode: 'cover',
+    backgroundColor: 'red',
   },
   businessText: {
     marginTop: 30,

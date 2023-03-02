@@ -32,6 +32,7 @@ export default {
   bgModalImage: require('../assests/bgModalImage.png'),
   acceptedLottie: require('../assests/acceptedLottie.json'),
   acceptLottie: require('../assests/accept_Lottie.json'),
+  Camera: require('../assests/Camera.png'),
 
   // addMore: require("../assests/addmore"),
 };

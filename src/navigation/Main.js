@@ -18,7 +18,7 @@ const Drawer = createDrawerNavigator();
 const Main = () => {
   return (
     <Drawer.Navigator
-      initialRouteName="Profile"
+      initialRouteName="Donations"
       screenOptions={{
         headerShown: false,
       }}

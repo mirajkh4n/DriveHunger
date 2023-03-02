@@ -8,7 +8,7 @@ import Geolocation from '@react-native-community/geolocation';
 import Lottie from 'lottie-react-native';
 
 const TrackingVolunteer = ({navigation}) => {
-  const [position, setPosition] = useState({
+  const [, setPosition] = useState({
     latitude: 10,
     longitude: 10,
     latitudeDelta: 0.001,

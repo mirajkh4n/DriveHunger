@@ -50,13 +50,13 @@ export default function Walk_Through({navigation}) {
             );
           }}
           activeDotStyle={{
-            width: 15,
-            height: 5,
+            width: 23,
+            height: 7,
             backgroundColor: '#056721',
           }}
           dotStyle={{
-            height: 5,
-            width: 15,
+            height: 7,
+            width: 23,
             backgroundColor: 'gray',
           }}
         />

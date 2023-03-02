@@ -1,9 +1,15 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Images from '../assests/Images';
+import {AuthContext} from '../context/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CustomDrawer(props) {
+  // const {logout} = useContext(AuthContext);
+  const logOut = () => {
+    AsyncStorage.clear();
+  };
   const arr = [
     {
       title: 'home',
@@ -36,7 +42,14 @@ export default function CustomDrawer(props) {
       icon: Images.PrivacyPolicy,
       goto: () => props.navigation.navigate('PrivacyPolicy'),
     },
-    {title: 'Logout', icon: Images.Logout},
+    {
+      title: 'Logout',
+      icon: Images.Logout,
+      goto: () => {
+        logOut();
+        // props.navigation.navigate('Walk_Through');
+      },
+    },
   ];
 
   return (
